@@ -16,7 +16,8 @@ export default new vuex.Store({
       name: "Bobby"
     },
     ships: [],
-    logs: []
+    logs: [],
+    activeShip:{}
   },
 
   mutations: {
@@ -30,6 +31,9 @@ export default new vuex.Store({
     },
     setLogs(state, payload) {
       state.logs = payload;
+    },
+    activeShip(state, payload){
+      state.activeShip = payload
     }
   },
   actions: {
@@ -69,6 +73,7 @@ export default new vuex.Store({
       api
         .get("ships/" + payload._id + "/logs")
         .then(res => {
+          commit('activeShip', payload)
           commit("setLogs", res.data.logs);
         })
         .catch(err => {

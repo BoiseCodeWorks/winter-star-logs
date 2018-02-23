@@ -8,17 +8,17 @@
         <img src="https://cdn.dribbble.com/users/15774/screenshots/1759511/spinner.gif" alt="" height="40">
       </div>
       <div v-else-if="ships.length == 1" class="ship" v-for="ship in ships">
-        <h5>{{ship.name}} THE LAST SURVIVOR</h5>
+        <h5 class="red">{{ship.name}} THE LAST SURVIVOR</h5>
       </div>
       <div v-else class="ship" v-for="ship in ships">
-        <h5>{{ship.name}}
+        <h5 :class="{active: activeShip == ship}">{{ship.name}}
           <button @click="getLogs(ship)">VIEW LOGS</button>
           <button @click="removeShip(ship)">DESTROY</button>
         </h5>
       </div>
 
       <div v-if="logs.length > 0">
-        <h3>LOGS FOR ...</h3>
+        <h3>LOGS FOR {{activeShip.name}}</h3>
         <div v-for="log in logs">
           <h5>{{log.title}}</h5>
         </div>
@@ -60,6 +60,9 @@
       },
       ships() {
         return this.$store.state.ships
+      },
+      activeShip() {
+        return this.$store.state.activeShip
       }
     },
     components: { UserProfile }
@@ -68,4 +71,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+  .active{
+    color: blue;
+  }
+
+  .red{
+    color: red;
+  }
 </style>
