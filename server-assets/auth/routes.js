@@ -6,6 +6,7 @@ var errorMessage = { error: "Invalid Auth" };
 router.post("/auth/register", (req, res) => {
   // @ts-ignore
   req.body.password = Users.generateHash(req.body.password);
+  req.body.role = 'public'
   Users.create(req.body)
     .then(user => {
       if (!user) {
@@ -13,6 +14,7 @@ router.post("/auth/register", (req, res) => {
       }
       user.password = null;
       delete user.password;
+      req.session.uid = user._id
       res.send(user);
     })
     .catch(err => res.status(401).send(errorMessage));
@@ -29,8 +31,17 @@ router.post("/auth/login", (req, res) => {
     }
     user.password = null;
     delete user.password;
+    req.session.uid = user._id
     res.send(user);
   });
 });
+
+
+router.put('/auth/user', (req, res) =>{
+  
+})
+
+
+
 
 module.exports = router;

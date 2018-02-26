@@ -4,16 +4,26 @@ var cors = require("cors");
 var server = express();
 require("./server-assets/db/mlab-config");
 var port = 3000;
+var session = require("./server-assets/auth/session");
 var authRoutes = require("./server-assets/auth/routes");
 var shipRoutes = require("./server-assets/routes/ships");
 var logRoutes = require("./server-assets/routes/logs");
 var commentRoutes = require("./server-assets/routes/comments");
 
 server.use(cors());
+server.use(session);
 server.use(bp.json());
 server.use(bp.urlencoded({ extended: true }));
 
 server.use(authRoutes);
+
+server.use("/api/*", (req, res, next) => {
+  if (req.method.toLowerCase() != "get" && !req.session.uid) {
+    return res.status(401).send({ error: "PLEASE LOGIN TO CONTINUE" });
+  }
+
+  next();
+});
 
 server.use(shipRoutes.router);
 server.use(logRoutes.router);

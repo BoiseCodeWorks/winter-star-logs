@@ -22,31 +22,32 @@ router.get("/api/ships/:id", (req, res, next) => {
 });
 
 // GET LOGS BY SHIPID
-router.get("/api/ships/:id/logs", (req, res, next)=>{
+router.get("/api/ships/:id/logs", (req, res, next) => {
   Ships.findById(req.params.id)
-    .then(ship=>{
-      Logs.find({shipId: req.params.id})
-        .then(logs =>{
-          ship.logs = logs
-          return res.send(ship)
+    .then(ship => {
+      Logs.find({ shipId: req.params.id })
+        .then(logs => {
+          ship.logs = logs;
+          return res.send(ship);
         })
-        .catch(next)
+        .catch(next);
     })
-    .catch(next)
+    .catch(next);
 });
 
-
 // GET Comments by LogId
-router.get("/api/ships/:shipId/logs/:logId/comments", (req, res, next)=>{
-  Comments.find({logId: req.params.logId})
-    .then(comments =>{
-      return res.send(comments)
+router.get("/api/ships/:shipId/logs/:logId/comments", (req, res, next) => {
+  Comments.find({ logId: req.params.logId })
+    .then(comments => {
+      return res.send(comments);
     })
-    .catch(next)
+    .catch(next);
 });
 
 // CREATE A SHIP
 router.post("/api/ships", (req, res, next) => {
+  req.body.creatorId = req.session.uid;
+
   Ships.create(req.body)
     .then(ship => {
       return res.send(ship);
