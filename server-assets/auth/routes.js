@@ -37,8 +37,24 @@ router.post("/auth/login", (req, res) => {
 });
 
 
-router.put('/auth/user', (req, res) =>{
-  
+router.get('/auth/authenticate', (req, res) =>{
+  Users.findById(req.session.uid)
+    .then(user=>{
+      if(!user){
+        return res.status(401).send({error: "Please Login to Continue"})
+      }
+      user.password = null;
+      return res.status(200).send(user)
+    }).catch(err=>{
+      return res.status(500).send({
+        error:err
+      })
+    })
+})
+
+router.delete('/auth/logout', (req, res)=>{
+  req.session.destroy()
+  res.send("Successfully logged out")
 })
 
 

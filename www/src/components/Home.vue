@@ -12,7 +12,7 @@
       </div>
       <div v-else class="ship" v-for="ship in ships">
         <h5 :class="{active: activeShip == ship}">{{ship.name}}
-          <button @click="getLogs(ship)">VIEW LOGS</button>
+          <router-link :to="{name: 'Logs', params: {shipId: ship._id}}">Logs</router-link>
           <button @click="removeShip(ship)">DESTROY</button>
         </h5>
       </div>
@@ -32,6 +32,9 @@
 
   export default {
     name: 'Home',
+    mounted(){
+      this.$store.dispatch('getShips')
+    },
     data() {
       return {
         // component data only NO API OR DB STUFF HERE

@@ -10,7 +10,18 @@ var shipRoutes = require("./server-assets/routes/ships");
 var logRoutes = require("./server-assets/routes/logs");
 var commentRoutes = require("./server-assets/routes/comments");
 
-server.use(cors());
+
+var whitelist = ['http://localhost:8080'];
+var corsOptions = {
+	origin: function (origin, callback) {
+		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+		callback(null, originIsWhitelisted);
+	},
+	credentials: true
+};
+
+
+server.use(cors(corsOptions));
 server.use(session);
 server.use(bp.json());
 server.use(bp.urlencoded({ extended: true }));

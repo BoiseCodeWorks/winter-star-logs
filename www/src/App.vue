@@ -5,14 +5,14 @@
 </template>
 
 <script>
+  import router from './router'
 export default {
-  name: 'App',
-  mounted(){
-    this.$store.dispatch('getShips')
+    name: 'App',
+    mounted() {
+      this.$store.dispatch('authenticate')
+    }
   }
-}
 </script>
 
 <style>
-
 </style>
